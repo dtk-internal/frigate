@@ -8,9 +8,9 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/__main__.py",
+            "program": "${workspaceFolder}/test.py",
             "console": "integratedTerminal",
-            "args": ["gen", "manifests/redis/", "--no-deps"]
+            "args": []
 
         }
     ]

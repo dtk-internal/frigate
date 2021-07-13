@@ -186,7 +186,7 @@ def clean_comment(comment):
     return comment.strip("# ")
 
 
-def traverse(tree, root=None):
+def traverse(tree, root=None, *, defaults_as_json=True):
     """Iterate over a tree of configuration and extract all information.
 
     Iterate over nested configuration and extract parameters, comments and values.
@@ -218,7 +218,7 @@ def traverse(tree, root=None):
         default = tree[key]
         if isinstance(default, dict) and default != {}:
             newroot = root + [key]
-            for value in traverse(default, root=newroot):
+            for value in traverse(default, root=newroot, defaults_as_json=defaults_as_json):
                 yield value
         else:
             if isinstance(default, list):
@@ -232,7 +232,8 @@ def traverse(tree, root=None):
             if key in tree.ca.items:
                 comment = get_comment(tree, key)
             param = ".".join(root + [key])
-            yield [param, comment, json.dumps(default)]
+            value = json.dumps(default) if defaults_as_json else default
+            yield [param, comment, value]
 
 
 def gen(chartdir, output_format, credits=True, deps=True):
